@@ -10,18 +10,23 @@ export class Search extends Component {
     searchUsers: PropTypes.func.isRequired,
     clearUsers: PropTypes.func.isRequired,
     showClear: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired,
   }
 
 
   onChange = (ev) => this.setState({ [ev.target.name]: ev.target.value })
   onSubmit = (ev) => {
     ev.preventDefault();
-    this.props.searchUsers(this.state.text);
-    this.setState({ text: '' })
+    if (this.state.text === '') {
+      this.props.setAlert('Please enter something', 'light')
+    } else {
+      this.props.searchUsers(this.state.text);
+      this.setState({ text: '' })
+    }
   }
 
   render() {
-    const {showClear, clearUsers} = this.props
+    const { showClear, clearUsers } = this.props
     return (
       <div>
         <form onSubmit={this.onSubmit} className="form">
