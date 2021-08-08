@@ -6,6 +6,7 @@ import Alert from './components/Layout/Alert';
 import Users from './components/Users/Users';
 import User from './components/Users/User';
 import Search from './components/Users/Search';
+import GithubState from './context/github/GithubState';
 import './App.css';
 
 const App = () => {
@@ -14,21 +15,6 @@ const App = () => {
   const [repos, setRepos] = useState([])
   const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState(null)
-
-  const searchUsers = async (text) => {
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ID}`
-      );
-      const data = await res.json();
-      setUsers(data.items);
-    } catch (err) {
-      console.warn(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Get github users
   const getUser = async (username) => {
@@ -72,7 +58,8 @@ const App = () => {
     setTimeout(() => setAlert(null), 3500)
   };
 
-    return (
+  return (
+    <GithubState>
       <Router>
         <div className="App">
           <Navbar />
@@ -86,7 +73,6 @@ const App = () => {
                   <Fragment>
                     <Search
                       clearUsers={clearUsers}
-                      searchUsers={searchUsers}
                       showClear={users.length > 0 ? true : false}
                       setAlert={showAlert}
                     />
@@ -114,7 +100,8 @@ const App = () => {
           </div>
         </div>
       </Router>
-    );
+    </GithubState>
+  );
 
 }
 
