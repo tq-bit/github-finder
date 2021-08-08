@@ -95,7 +95,7 @@ const User = ({ user, loading, getUser, getUserRepos, repos, match }) => {
 
 User.propTypes = {
   loading: PropTypes.bool,
-  user: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
   repos: PropTypes.array.isRequired,
   getUser: PropTypes.func.isRequired,
   getUserRepos: PropTypes.func.isRequired,
