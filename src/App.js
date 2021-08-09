@@ -10,27 +10,13 @@ import GithubState from './context/github/GithubState';
 import './App.css';
 
 const App = () => {
-  const [users, setUsers] = useState([])
   const [user, setUser] = useState({})
   const [repos, setRepos] = useState([])
   const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState(null)
 
   // Get github users
-  const getUser = async (username) => {
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ID}`
-      );
-      const data = await res.json();
-      setUser(data);
-    } catch (err) {
-      console.warn(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   // Get user's repos
   const getUserRepos = async (username) => {
@@ -47,11 +33,6 @@ const App = () => {
       setLoading(false);
     }
   };
-
-  const clearUsers = () => {
-    setUsers([]);
-    setLoading(false)
-  }
 
   const showAlert = (message, type) => {
     setAlert({ message, type })
@@ -72,11 +53,9 @@ const App = () => {
                 render={(props) => (
                   <Fragment>
                     <Search
-                      clearUsers={clearUsers}
-                      showClear={users.length > 0 ? true : false}
                       setAlert={showAlert}
                     />
-                    <Users loading={loading} users={users} />
+                    <Users />
                   </Fragment>
                 )}
               />
@@ -88,9 +67,7 @@ const App = () => {
                 render={(props) => (
                   <User
                     {...props}
-                    getUser={getUser}
                     getUserRepos={getUserRepos}
-                    user={user}
                     repos={repos}
                     loading={loading}
                   />
