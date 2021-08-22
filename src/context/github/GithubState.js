@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import GithubContext from './GithubContext';
 import GithubReducer from './githubReducer';
 import {
-  CLEAR_USERS, GET_REPOS, GET_USER, REMOVE_ALERT, SEARCH_USERS, SET_ALERT, SET_LOADING
+  CLEAR_USERS, GET_REPOS, GET_USER, SEARCH_USERS, SET_LOADING
 } from '../types';
 
 const GithubState = props => {
@@ -43,6 +43,18 @@ const GithubState = props => {
   };
 
   // Get Repos
+  const getUserRepos = async (username) => {
+    try {
+      setLoading();
+      const res = await fetch(
+        `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_ID}`
+      );
+      const data = await res.json();
+      dispatch({ type: GET_REPOS, payload: data })
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   // Clear Users
   const clearUsers = () => dispatch({ type: CLEAR_USERS })
@@ -59,6 +71,7 @@ const GithubState = props => {
       searchUsers,
       getUser,
       clearUsers,
+      getUserRepos,
     }}>
     {props.children}
 
