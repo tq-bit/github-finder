@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import About from './components/Pages/About';
 import Navbar from './components/Layout/Navbar';
-import Alert from './components/Layout/Alert';
-import Users from './components/Users/Users';
 import User from './components/Users/User';
-import Search from './components/Users/Search';
+import Alert from './components/Layout/Alert';
+import Home from './components/Pages/Home';
+import NotFound from './components/Pages/NotFound';
 import GithubState from './context/github/GithubState';
 import AlertState from './context/alert/AlertState';
 import './App.css';
@@ -23,13 +23,7 @@ const App = () => {
                 <Route
                   exact
                   path="/"
-                  render={(props) => (
-                    <Fragment>
-                      <Search
-                      />
-                      <Users />
-                    </Fragment>
-                  )}
+                  component={Home}
                 />
 
                 <Route exact path="/about" component={About} />
@@ -37,6 +31,7 @@ const App = () => {
                   exact
                   path="/user/:login"
                   component={User} />
+                <Route component={NotFound} />
               </Switch>
             </div>
           </div>
